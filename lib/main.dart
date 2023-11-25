@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:what_to_eat_app/widgets/appBar.dart';
+import 'package:what_to_eat_app/widgets/bottomBar.dart';
 //rename to feast friend
 
 void main() {
@@ -32,16 +34,10 @@ class _HomeState extends State<Home> {
         child: Column(
           children: [
             SizedBox(height: 70),
-            Container(
-              height: 70,
-              color: Colors.deepPurpleAccent,),
-            Expanded(child: Container(
-              color: Colors.redAccent,
-            )),
-            Container(
-              height: 120,
-              color: Colors.deepPurpleAccent,)
-          ],
+            TopBar(),
+            Expanded(child: Container(color: Colors.redAccent)),
+            BottomBar()
+          ]
         ),
       ),
     );
