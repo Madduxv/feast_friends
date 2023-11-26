@@ -11,7 +11,7 @@ class _BottomBarState extends State<BottomBar> {
   Widget build(BuildContext context) {
     return Container(
       height: 120,
-      color: Colors.deepPurpleAccent,
+      //color: Colors.deepPurpleAccent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

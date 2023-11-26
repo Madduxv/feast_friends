@@ -13,14 +13,26 @@ class _TopBarState extends State<TopBar> {
   Widget build(BuildContext context) {
     return Container(
       height: 70,
-      color: Colors.deepPurpleAccent,
+      //color: Colors.deepPurpleAccent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          //imageWidget('assets/logo.png'),
           buttonWidget(Icons.star, Colors.amber),
           buttonWidget(Icons.notifications, Colors.grey.shade400),
         ],
       ),
     );
   }
+}
+
+Widget imageWidget(String image) {
+  return Container(
+    height: 50,
+    width: 50,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover)
+    ),
+  );
 }
