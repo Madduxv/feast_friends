@@ -13,11 +13,9 @@ class _TopBarState extends State<TopBar> {
   Widget build(BuildContext context) {
     return Container(
       height: 70,
-      //color: Colors.deepPurpleAccent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          //imageWidget('assets/logo.png'),
           buttonWidget(Icons.star, Colors.amber),
           buttonWidget(Icons.notifications, Colors.grey.shade400),
         ],
