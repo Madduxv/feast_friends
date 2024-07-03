@@ -17,19 +17,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.dark),
-      home: Home(),
+      home: RestaurantCards(),
     );
   }
 }
 
-class Home extends StatefulWidget {
-  const Home({Key? key}): super(key: key);
+class RestaurantCards extends StatefulWidget {
+  const RestaurantCards({Key? key}): super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  RestaurantCardState createState() => RestaurantCardState();
 }
 
-class _HomeState extends State<Home> {
+class RestaurantCardState extends State<RestaurantCards> {
   List<SwipeItem> _swipeItems = <SwipeItem>[];
   MatchEngine? _matchEngine;
   List<String> names = [
