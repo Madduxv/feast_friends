@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'package:what_to_eat_app/functions/alertFunction.dart';
+import 'package:what_to_eat_app/functions/httpFunctions.dart';
 import 'package:what_to_eat_app/utils/constants.dart';
 import 'package:what_to_eat_app/widgets/appBar.dart';
 import 'package:what_to_eat_app/widgets/bottomBar.dart';

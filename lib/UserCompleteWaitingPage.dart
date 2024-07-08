@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:what_to_eat_app/functions/httpFunctions.dart';
 import 'RestaurantCardsPage.dart';
 
-class WaitingPage extends StatelessWidget {
-  const WaitingPage({Key? key}) : super(key: key);
+class UserCompleteWaitingPage extends StatelessWidget {
+  const UserCompleteWaitingPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
