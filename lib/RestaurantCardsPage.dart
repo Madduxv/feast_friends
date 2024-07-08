@@ -15,7 +15,7 @@ class RestaurantCards extends StatefulWidget {
 class RestaurantCardState extends State<RestaurantCards> {
   List<SwipeItem> _swipeItems = <SwipeItem>[];
   MatchEngine? _matchEngine;
-  List<String> names = [
+  List<String> restaurantNames = [
     'Burger King',
     'Copelands',
     'Mcdonalds',
@@ -26,16 +26,16 @@ class RestaurantCardState extends State<RestaurantCards> {
 
   @override
   void initState(){
-    for(int i = 0; i<names.length; i++) {
-      _swipeItems.add(SwipeItem(content: Content(text: names[i]),
+    for(int i = 0; i<restaurantNames.length; i++) {
+      _swipeItems.add(SwipeItem(content: Content(text: restaurantNames[i]),
           likeAction: (){
-            actions(context, names[i], 'Liked');
+            actions(context, restaurantNames[i], 'Liked');
           },
           nopeAction: (){
-            actions(context, names[i], 'Rejected');
+            actions(context, restaurantNames[i], 'Rejected');
           },
           superlikeAction: (){
-            actions(context, names[i], 'Super Liked');
+            actions(context, restaurantNames[i], 'Super Liked');
           }
       ));
     }
@@ -58,7 +58,7 @@ class RestaurantCardState extends State<RestaurantCards> {
                     return Container(
                       alignment: Alignment.bottomLeft,
                       decoration: BoxDecoration(
-                          image: DecorationImage(image: AssetImage(images[index]),
+                          image: DecorationImage(image: AssetImage(restaurantImages[index]),
                               fit: BoxFit.cover),
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(10)),
@@ -67,7 +67,7 @@ class RestaurantCardState extends State<RestaurantCards> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            names[index],
+                            restaurantNames[index],
                             style: const TextStyle(
                                 fontSize: 32,
                                 color: Colors.white,

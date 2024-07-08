@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:what_to_eat_app/RestaurantCardsPage.dart';
+import 'GenrePage.dart';
+import 'RestaurantCardsPage.dart';
 //rename to feast friend
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.dark),
-      home: RestaurantCards(),
+      home: const GenreCards(),
     );
   }
 }
