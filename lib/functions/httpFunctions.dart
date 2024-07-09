@@ -49,14 +49,19 @@ class HttpFunctions {
     } catch (e) {
       print('Error requesting genre: $e');
     }
-  //   
-  //   final response = await http.get(Uri.parse('$baseUrl/request_genre'));
-  //       body: genre,);
-  //   if (response.statusCode == 201) {
-  //     print(response.body);
-  //     return response.body;
-  //   } else {
-  //     throw Exception('Failed to post data');
-  //   }
+  }
+
+  static Future<void> requestGenre(String genre) async {
+    final url = Uri.parse('${Config().baseUrl}/request_genre');
+    try {
+      final response = await http.delete(url);
+      if (response.statusCode == 200) {
+        print('Requested genres cleared successfully');
+      } else {
+        print('Failed to clear requested genres. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error clearing requested genres: $e');
+    }
   }
 }
