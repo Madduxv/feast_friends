@@ -51,7 +51,7 @@ class HttpFunctions {
     }
   }
 
-  static Future<void> requestGenre(String genre) async {
+  static Future<void> clearRequestedGenres(String genre) async {
     final url = Uri.parse('${Config().baseUrl}/request_genre');
     try {
       final response = await http.delete(url);
