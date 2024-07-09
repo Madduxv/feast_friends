@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
-import 'package:http/http.dart' as http;
-import 'package:what_to_eat_app/functions/alertFunction.dart';
+// import 'package:what_to_eat_app/functions/alertFunction.dart';
+import 'package:what_to_eat_app/functions/httpFunctions.dart';
 import 'package:what_to_eat_app/utils/constants.dart';
 import 'package:what_to_eat_app/widgets/appBar.dart';
 import 'package:what_to_eat_app/widgets/bottomBar.dart';
 
 import 'RestaurantCardsPage.dart';
-import 'WaitingPage.dart';
+import 'UserCompleteWaitingPage.dart';
 
 class GenreCards extends StatefulWidget {
   const GenreCards({Key? key}): super(key: key);
@@ -30,15 +30,19 @@ class GenreCardsState extends State<GenreCards> {
 
   @override
   void initState(){
+    // HttpFunctions.postData();
+    // HttpFunctions.fetchData();
     for(int i = 0; i<genreNames.length; i++) {
       _swipeItems.add(SwipeItem(content: Content(text: genreNames[i]),
           likeAction: (){
+            HttpFunctions.requestGenre(genreNames[i]);
             // actions(context, genreNames[i], 'Liked');
           },
           nopeAction: (){
             // actions(context, genreNames[i], 'Rejected');
           },
           superlikeAction: (){
+            HttpFunctions.requestGenre(genreNames[i]);
             // actions(context, genreNames[i], 'Super Liked');
           }
       ));
@@ -83,8 +87,9 @@ class GenreCardsState extends State<GenreCards> {
                     );
                   },
                   onStackFinished: (){
+                       HttpFunctions.getRequestedGenres();
                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                           return const WaitingPage();
+                           return const UserCompleteWaitingPage();
                        }));
                   },
                 ),
