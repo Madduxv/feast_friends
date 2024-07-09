@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.what_to_eat_app"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34/* flutter.compileSdkVersion */
     ndkVersion flutter.ndkVersion
 
     compileOptions {
