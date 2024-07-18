@@ -35,7 +35,7 @@ class GenreCardsState extends State<GenreCards> {
     for(int i = 0; i<genreNames.length; i++) {
       _swipeItems.add(SwipeItem(content: Content(text: genreNames[i]),
           likeAction: (){
-            HttpFunctions.requestGenre(genreNames[i]);
+            HttpFunctions.requestGenre(genreNames[i].toUpperCase());
             // actions(context, genreNames[i], 'Liked');
           },
           nopeAction: (){

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'package:what_to_eat_app/functions/alertFunction.dart';
 import 'package:what_to_eat_app/functions/httpFunctions.dart';
@@ -16,17 +17,26 @@ class RestaurantCards extends StatefulWidget {
 class RestaurantCardState extends State<RestaurantCards> {
   List<SwipeItem> _swipeItems = <SwipeItem>[];
   MatchEngine? _matchEngine;
-  List<String> restaurantNames = [
-    'Burger King',
-    'Copelands',
-    'Mcdonalds',
-    'Pokegeaux',
-    'Texas Roadhouse'
-  ];
+  List<String> restaurantNames = [];
+
+  void fetchRestaurants() async {
+    List<String> names = await HttpFunctions.getRequestedRestaurants();
+    setState(() {
+        restaurantNames = names;
+        });
+  }
+  // [
+  //   'Burger King',
+  //   'Copelands',
+  //   'Mcdonalds',
+  //   'Pokegeaux',
+  //   'Texas Roadhouse'
+  // ];
 
 
   @override
   void initState(){
+    fetchRestaurants();
     for(int i = 0; i<restaurantNames.length; i++) {
       _swipeItems.add(SwipeItem(content: Content(text: restaurantNames[i]),
           likeAction: (){

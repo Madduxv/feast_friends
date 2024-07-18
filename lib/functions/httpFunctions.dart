@@ -17,6 +17,26 @@ class HttpFunctions {
     }
   }
 
+  static Future<List<String>> getRequestedRestaurants() async {
+    final url = Uri.parse('${Config().baseUrl}/restaurant/requested_restaurants');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        print('Successfully fetched requested restaurants.');
+        // Parse the response body to a list of strings
+        List<dynamic> jsonResponse = jsonDecode(response.body);
+        List<String> restaurantNames = jsonResponse.cast<String>();
+        print(restaurantNames);
+        return restaurantNames;
+      } else {
+        print('Failed to load requested genres. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching requested genres: $e');
+    }
+    return [];
+  }
+
   static Future<String> getRequestedGenres() async {
     // if (!Config().isLoaded) {
     //   throw Exception('Configuration not loaded');

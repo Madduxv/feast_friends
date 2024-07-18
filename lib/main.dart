@@ -34,8 +34,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.dark),
-      home: /* const */ FindUserPage(),
-      // home: const GenreCards(),
+      // home: /* const */ FindUserPage(),
+      home: const GenreCards(),
     );
   }
 }
