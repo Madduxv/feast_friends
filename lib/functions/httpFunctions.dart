@@ -21,7 +21,7 @@ class HttpFunctions {
     // if (!Config().isLoaded) {
     //   throw Exception('Configuration not loaded');
     // }
-    final url = Uri.parse('${Config().baseUrl}/requested_genres');
+    final url = Uri.parse('${Config().baseUrl}/restaurant/requested_genres');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -38,7 +38,7 @@ class HttpFunctions {
   }
 
   static Future<void> requestGenre(String genre) async {
-    final url = Uri.parse('${Config().baseUrl}/request_genre');
+    final url = Uri.parse('${Config().baseUrl}/restaurant/request_genre');
     try {
       final response = await http.post(url, body: genre);
       if (response.statusCode == 200) {
@@ -52,7 +52,7 @@ class HttpFunctions {
   }
 
   static Future<void> clearRequestedGenres() async {
-    final url = Uri.parse('${Config().baseUrl}/clear_genres');
+    final url = Uri.parse('${Config().baseUrl}/restaurant/clear_genres');
     try {
       final response = await http.post(url);
       if (response.statusCode == 200) {
