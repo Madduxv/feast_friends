@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:what_to_eat_app/config.dart';
 import 'GenrePage.dart';
-import 'RestaurantCardsPage.dart';
+// import 'RestaurantCardsPage.dart';
 import 'FindUserPage.dart';
 //rename to feast friend
 
@@ -34,8 +32,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(brightness: Brightness.dark),
-      // home: /* const */ FindUserPage(),
       home: const GenreCards(),
+      // home: const GenreCards(),
     );
   }
 }
