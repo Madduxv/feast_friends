@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'dart:convert';
 
-import 'package:what_to_eat_app/config.dart';
+// import 'package:what_to_eat_app/config.dart';
 
 class WebSocketService {
 
@@ -22,6 +22,7 @@ class WebSocketService {
     });
     channel.sink.add(message);
   }
+
 
   // static void createGroup(String name) {
   //   sendMessage('join', '${name}s group');

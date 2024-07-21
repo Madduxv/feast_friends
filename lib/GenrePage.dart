@@ -1,13 +1,16 @@
+import 'dart:convert';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 // import 'package:what_to_eat_app/functions/alertFunction.dart';
-import 'package:what_to_eat_app/functions/httpFunctions.dart';
+// import 'package:what_to_eat_app/functions/httpFunctions.dart';
 import 'package:what_to_eat_app/functions/WebSocketService.dart';
 import 'package:what_to_eat_app/utils/constants.dart';
 import 'package:what_to_eat_app/widgets/appBar.dart';
 import 'package:what_to_eat_app/widgets/bottomBar.dart';
-import 'package:what_to_eat_app/config.dart';
+// import 'package:what_to_eat_app/config.dart';
 
 import 'UserCompleteWaitingPage.dart';
 
@@ -21,8 +24,13 @@ class GenreCards extends StatefulWidget {
 class GenreCardsState extends State<GenreCards> {
   late WebSocketService webSocketService;
   late WebSocketChannel channel;
-  TextEditingController _controller = TextEditingController();
-  String _receivedMessage = '';
+  final Completer<void> _genresCompleter = Completer<void>();
+  final Completer<void> _restaurantsCompleter = Completer<void>();
+  // TextEditingController _controller = TextEditingController();
+  dynamic _receivedMessage = '';
+  String message = '';
+  List<String> genres = [];
+  List<String> restaurants = [];
   String name = "Maddux";
   String groupName = "Maddux's Group";
 
@@ -45,8 +53,26 @@ class GenreCardsState extends State<GenreCards> {
     channel = webSocketService.channel;
     channel.stream.listen((message) {
         setState(() {
-            _receivedMessage = message;
+            _receivedMessage = jsonDecode(message);
+            switch (_receivedMessage['contentType']) {
+            case 'genres':
+              genres = List<String>.from(_receivedMessage['content']);
+              _genresCompleter.complete();
+              print(genres);
+              break;
+            case 'restaurants':
+              restaurants = List<String>.from(_receivedMessage['content']);
+              _restaurantsCompleter.complete();
+              print(restaurants);
+              break;
+            // case 'message':
+            //   this.message = _receivedMessage['content'];
+            //   break;
+            default:
+              print('Unknown content type');
+            }
             print(message);
+            print(_receivedMessage);
             });
         });
     _joinGroup(groupName);
@@ -78,17 +104,33 @@ class GenreCardsState extends State<GenreCards> {
     super.dispose();
   }
 
-  void _joinGroup(groupName) {
+  Future<void> _joinGroup(groupName) async {
     webSocketService.sendMessage('join', groupName);
   }
 
-  void _requestGenre(genre) {
+  Future<void> _requestGenre(genre) async {
     webSocketService.sendMessage('addGenre', genre);
     print('Genre requested');
   }
 
-  void _requestedGenres(genre) {
+  Future<void> _requestedGenres(genre) async {
     webSocketService.sendMessage('getRequestedGenres', groupName);
+  }
+
+  Future<void> _requestedRestaurants(groupName) async {
+    webSocketService.sendMessage('getRequestedRestaurants', groupName);
+  }
+
+  Future<void> fetchAndNavigate(String groupName) async {
+    _requestedGenres(groupName);
+    _requestedRestaurants(groupName);
+
+    await Future.wait([_genresCompleter.future, _restaurantsCompleter.future]);
+    print('genres: $genres \n restaurants: $restaurants');
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const UserCompleteWaitingPage();
+          }));
   }
 
   @override
@@ -127,11 +169,7 @@ class GenreCardsState extends State<GenreCards> {
                     );
                   },
                   onStackFinished: (){
-                       _requestedGenres(groupName);
-                       // HttpFunctions.getRequestedGenres();
-                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                           return const UserCompleteWaitingPage();
-                       }));
+                    fetchAndNavigate(groupName);
                   },
                 ),
               )),
