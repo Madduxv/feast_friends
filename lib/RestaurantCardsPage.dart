@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
+// import 'dart:convert';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'package:what_to_eat_app/functions/alertFunction.dart';
-import 'package:what_to_eat_app/functions/httpFunctions.dart';
+// import 'package:what_to_eat_app/functions/httpFunctions.dart';
 import 'package:what_to_eat_app/utils/constants.dart';
 import 'package:what_to_eat_app/widgets/appBar.dart';
 import 'package:what_to_eat_app/widgets/bottomBar.dart';
 
 class RestaurantCards extends StatefulWidget {
-  const RestaurantCards({Key? key}): super(key: key);
+  final List<String> genres;
+  final List<String> restaurants;
+
+  const RestaurantCards({Key? key, required this.genres, required this.restaurants}): super(key: key);
 
   @override
   RestaurantCardState createState() => RestaurantCardState();
@@ -19,12 +22,6 @@ class RestaurantCardState extends State<RestaurantCards> {
   MatchEngine? _matchEngine;
   List<String> restaurantNames = [];
 
-  void fetchRestaurants() async {
-    List<String> names = await HttpFunctions.getRequestedRestaurants();
-    setState(() {
-        restaurantNames = names;
-        });
-  }
   // [
   //   'Burger King',
   //   'Copelands',
@@ -36,7 +33,7 @@ class RestaurantCardState extends State<RestaurantCards> {
 
   @override
   void initState(){
-    fetchRestaurants();
+    List<String> restaurantNames = widget.restaurants;
     for(int i = 0; i<restaurantNames.length; i++) {
       _swipeItems.add(SwipeItem(content: Content(text: restaurantNames[i]),
           likeAction: (){

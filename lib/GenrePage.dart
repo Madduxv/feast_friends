@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:what_to_eat_app/RestaurantCardsPage.dart';
 // import 'package:what_to_eat_app/functions/alertFunction.dart';
 // import 'package:what_to_eat_app/functions/httpFunctions.dart';
 import 'package:what_to_eat_app/functions/WebSocketService.dart';
@@ -129,7 +130,7 @@ class GenreCardsState extends State<GenreCards> {
     print('genres: $genres \n restaurants: $restaurants');
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const UserCompleteWaitingPage();
+          return UserCompleteWaitingPage(genres: genres, restaurants: restaurants);
           }));
   }
 
