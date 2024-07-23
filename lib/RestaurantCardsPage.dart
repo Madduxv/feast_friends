@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 // import 'dart:convert';
 import 'package:swipe_cards/swipe_cards.dart';
@@ -22,18 +23,11 @@ class RestaurantCardState extends State<RestaurantCards> {
   MatchEngine? _matchEngine;
   List<String> restaurantNames = [];
 
-  // [
-  //   'Burger King',
-  //   'Copelands',
-  //   'Mcdonalds',
-  //   'Pokegeaux',
-  //   'Texas Roadhouse'
-  // ];
-
-
   @override
   void initState(){
-    List<String> restaurantNames = widget.restaurants;
+    super.initState();
+    restaurantNames = widget.restaurants;
+    print(restaurantNames);
     for(int i = 0; i<restaurantNames.length; i++) {
       _swipeItems.add(SwipeItem(content: Content(text: restaurantNames[i]),
           likeAction: (){
@@ -48,7 +42,7 @@ class RestaurantCardState extends State<RestaurantCards> {
       ));
     }
     _matchEngine = MatchEngine(swipeItems: _swipeItems);
-    super.initState();
+    // super.initState();
   }
 
   @override
@@ -99,6 +93,10 @@ class RestaurantCardState extends State<RestaurantCards> {
     );
 
   }
+}
+
+void getRestaurantImage(restaurantName) {
+
 }
 
 class Content{
