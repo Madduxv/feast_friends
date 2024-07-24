@@ -11,7 +11,7 @@ import 'package:what_to_eat_app/functions/WebSocketService.dart';
 import 'package:what_to_eat_app/utils/constants.dart';
 import 'package:what_to_eat_app/widgets/appBar.dart';
 import 'package:what_to_eat_app/widgets/bottomBar.dart';
-// import 'package:what_to_eat_app/config.dart';
+import 'package:what_to_eat_app/config.dart';
 
 import 'UserCompleteWaitingPage.dart';
 
@@ -49,8 +49,8 @@ class GenreCardsState extends State<GenreCards> {
   @override
   void initState(){
     super.initState();
-    // webSocketService = WebSocketService('ws://${Config().baseUrl}/ws');
-    webSocketService = WebSocketService('ws://10.0.2.2:8080/ws');
+    webSocketService = WebSocketService('ws://${Config().baseUrl}/ws');
+    // webSocketService = WebSocketService('ws://10.0.2.2:8080/ws');
     channel = webSocketService.channel;
     channel.stream.listen((message) {
         setState(() {

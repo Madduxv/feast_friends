@@ -57,10 +57,12 @@ class RestaurantCardState extends State<RestaurantCards> {
                 child: SwipeCards(
                   matchEngine: _matchEngine!,
                   itemBuilder: (BuildContext context, int index) {
+                  String? imagePath = restaurantImages[restaurantNames[index]];
                     return Container(
                       alignment: Alignment.bottomLeft,
                       decoration: BoxDecoration(
-                          image: DecorationImage(image: AssetImage(restaurantImages[index]),
+                          image: DecorationImage(
+                          image: AssetImage(imagePath ?? 'assets/Zen.jpg'),
                               fit: BoxFit.cover),
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(10)),

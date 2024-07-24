@@ -8,6 +8,7 @@
     "description": "Like Tinder, but for food.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
+    "permissions": ["internet"],
     "icons": [
         {
             "src": "icons/Icon-192.png",

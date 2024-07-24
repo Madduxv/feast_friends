@@ -1,10 +1,30 @@
-List restaurantImages = [
-  'assets/burgerKing.jpg',
-  'assets/copelands.jpg',
-  'assets/mcdonalds.jpg',
-  'assets/pokegeaux.jpg',
-  'assets/texasRoadhouse.jpg'
-];
+Map<String, String> restaurantImages = {
+  'Burger King': 'assets/burgerKing.jpg',
+  'Copelands': 'assets/copelands.jpg',
+  "Mcdonald's": 'assets/mcdonalds.jpg',
+  'Pokegeaux': 'assets/pokegeaux.jpg',
+  'Texas Roadhouse': 'assets/texasRoadhouse.jpg',
+  'Chick-Fil-A': 'assets/ChicFilA.jpg',
+  'Subway': 'assets/Subway.jpg',
+  'Walk-Ons': 'assets/WalkOns.jpg',
+  'Mr. Poboys': 'assets/MrPoboys.jpg',
+  'Rotolos': 'assets/Rotolos.jpg',
+  "Domino's": 'assets/Dominos.jpg',
+  "Papa John's": 'assets/PapaJohns.jpg',
+  'Olive Gardens': 'assets/OliveGardens.jpg',
+  // 'assets/BoudreauxAndThibodeaux.jpg',
+  'Popeyes': 'assets/Popeyes.jpg',
+  'Zen': 'assets/Zen.jpg',
+  'OSAKA': 'assets/Osaka.jpg',
+  'Ichiba': 'assets/Ichiban.jpg',
+  'Chinese Gormet': 'assets/ChineseGormet.jpg',
+  'Grand Buffet': 'assets/GrandBuffet.jpg',
+  'Hong Kong': 'assets/HongKong.jpg',
+  'LA CASA': 'assets/LaCasa.jpg',
+  'HERADURRA': 'assets/Heradurra.jpg',
+  'El Paso': 'assets/ElPaso.jpg',
+  'Taco Truck': 'assets/TacoTruck.jpg',
+  };
 
 List genreImages = [
   'assets/AmericanFood.jpg',
