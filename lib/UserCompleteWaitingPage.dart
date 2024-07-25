@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:what_to_eat_app/functions/httpFunctions.dart';
+// import 'package:what_to_eat_app/functions/httpFunctions.dart';
 import 'RestaurantCardsPage.dart';
 
 class UserCompleteWaitingPage extends StatelessWidget {
   final List<String> genres;
   final List<String> restaurants;
-  const UserCompleteWaitingPage({Key? key, required this.genres, required this.restaurants}) : super(key: key);
+  final String groupName;
+  const UserCompleteWaitingPage({Key? key, required this.genres, required this.restaurants, required this.groupName}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +18,7 @@ class UserCompleteWaitingPage extends StatelessWidget {
         child: TextButton(
           onPressed: () {  
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return RestaurantCards(genres: genres, restaurants: restaurants);
+                return RestaurantCards(restaurantChoices: restaurants, groupName: groupName);
             }));
           },
           child: const Text('Next'),

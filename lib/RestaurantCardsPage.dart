@@ -1,42 +1,74 @@
 
 import 'package:flutter/material.dart';
-// import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'dart:convert';
+import 'dart:async';
 import 'package:swipe_cards/swipe_cards.dart';
+
 import 'package:what_to_eat_app/functions/alertFunction.dart';
 // import 'package:what_to_eat_app/functions/httpFunctions.dart';
+import 'package:what_to_eat_app/functions/WebSocketService.dart';
 import 'package:what_to_eat_app/utils/constants.dart';
 import 'package:what_to_eat_app/widgets/appBar.dart';
 import 'package:what_to_eat_app/widgets/bottomBar.dart';
 
 class RestaurantCards extends StatefulWidget {
-  final List<String> genres;
-  final List<String> restaurants;
+  final List<String> restaurantChoices;
+  final String groupName;
 
-  const RestaurantCards({Key? key, required this.genres, required this.restaurants}): super(key: key);
+  const RestaurantCards({Key? key, required this.restaurantChoices, required this.groupName}): super(key: key);
 
   @override
   RestaurantCardState createState() => RestaurantCardState();
 }
 
 class RestaurantCardState extends State<RestaurantCards> {
+  late WebSocketService webSocketService;
+  late WebSocketChannel channel;
+  final Completer<void> _restaurantsCompleter = Completer<void>();
+  dynamic _receivedMessage = '';
+
   List<SwipeItem> _swipeItems = <SwipeItem>[];
   MatchEngine? _matchEngine;
+
   List<String> restaurantNames = [];
+  List<String> restaurants = [];
+
 
   @override
   void initState(){
     super.initState();
-    restaurantNames = widget.restaurants;
+    webSocketService = Provider.of<WebSocketService>(context, listen: false);
+    webSocketService.messages.listen((message) {
+        setState(() {
+            _receivedMessage = jsonDecode(message);
+            switch (_receivedMessage['contentType']) {
+            case 'groupRestaurants':
+              restaurants = List<String>.from(_receivedMessage['content']);
+              _restaurantsCompleter.complete();
+              print(restaurants);
+              break;
+            default:
+              print('Unknown content type');
+            }
+            print(_receivedMessage);
+            });
+        });
+
+    restaurantNames = widget.restaurantChoices;
     print(restaurantNames);
     for(int i = 0; i<restaurantNames.length; i++) {
       _swipeItems.add(SwipeItem(content: Content(text: restaurantNames[i]),
           likeAction: (){
+            _requestRestaurant(restaurantNames[i]);
             actions(context, restaurantNames[i], 'Liked');
           },
           nopeAction: (){
             actions(context, restaurantNames[i], 'Rejected');
           },
           superlikeAction: (){
+            _requestRestaurant(restaurantNames[i]);
             actions(context, restaurantNames[i], 'Super Liked');
           }
       ));
@@ -51,8 +83,8 @@ class RestaurantCardState extends State<RestaurantCards> {
       body: Container(
         child: Column(
             children: [
-              SizedBox(height: 70),
-              TopBar(),
+              const SizedBox(height: 70),
+              const TopBar(),
               Expanded(child: Container(
                 child: SwipeCards(
                   matchEngine: _matchEngine!,
@@ -66,7 +98,7 @@ class RestaurantCardState extends State<RestaurantCards> {
                               fit: BoxFit.cover),
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(10)),
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -83,23 +115,37 @@ class RestaurantCardState extends State<RestaurantCards> {
                     );
                   },
                   onStackFinished: (){
-                    return ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('The List is over')));
+                    fetchAndNavigate();
                   },
                 ),
               )),
-              BottomBar()
+              const BottomBar()
             ]
         ),
       ),
     );
 
   }
+
+  Future<void> _requestRestaurant(restaurant) async {
+    webSocketService.sendMessage('addRestaurant', restaurant);
+    print('Requesting restaurant');
+  }
+
+  Future<void> _requestedRestaurants(groupName) async {
+    webSocketService.sendMessage('getRequestedRestaurants', groupName);
+  }
+
+  Future<ScaffoldFeatureController> fetchAndNavigate() async {
+    _requestedRestaurants(widget.groupName);
+
+    await Future.wait([_restaurantsCompleter.future]);
+    print('restaurants: $restaurants');
+    return ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('The List is over')));
+  }
 }
 
-void getRestaurantImage(restaurantName) {
-
-}
 
 class Content{
   final String? text;

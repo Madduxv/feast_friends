@@ -118,7 +118,7 @@ class GenreCardsState extends State<GenreCards> {
   }
 
   Future<void> _requestedRestaurants(groupName) async {
-    webSocketService.sendMessage('getRequestedRestaurants', groupName);
+    webSocketService.sendMessage('getRestaurantChoices', groupName);
   }
 
   Future<void> fetchAndNavigate(String groupName) async {
@@ -129,7 +129,7 @@ class GenreCardsState extends State<GenreCards> {
     print('genres: $genres \n restaurants: $restaurants');
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return UserCompleteWaitingPage(genres: genres, restaurants: restaurants);
+          return UserCompleteWaitingPage(genres: genres, restaurants: restaurants, groupName: groupName);
           }));
   }
 
