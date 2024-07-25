@@ -1,15 +1,39 @@
 // import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'dart:convert';
+import 'dart:async';
 
 // import 'package:what_to_eat_app/config.dart';
 
 class WebSocketService {
 
-  final WebSocketChannel channel;
+  final String url;
+  late WebSocketChannel channel;
+  final _controller = StreamController<String>.broadcast();
 
-  WebSocketService(String url)
-      : channel = WebSocketChannel.connect(Uri.parse(url));
+  WebSocketService(this.url) {
+    _connect();
+  }
+
+void _connect() {
+    channel = WebSocketChannel.connect(Uri.parse(url));
+    channel.stream.listen(
+      (message) {
+        _controller.add(message);
+      },
+      onDone: () {
+        // Reconnect if the connection is closed
+        print('Disconnected from WebSocket. Trying to reconnect...');
+        _connect();
+      },
+      onError: (error) {
+        print('WebSocket error: $error');
+        // Handle error if necessary
+      },
+    );
+  }
+
+  Stream<String> get messages => _controller.stream;
 
   void close() {
     channel.sink.close();

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
+import 'package:provider/provider.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:what_to_eat_app/RestaurantCardsPage.dart';
 // import 'package:what_to_eat_app/functions/alertFunction.dart';
@@ -49,10 +49,10 @@ class GenreCardsState extends State<GenreCards> {
   @override
   void initState(){
     super.initState();
-    webSocketService = WebSocketService('ws://${Config().baseUrl}/ws');
+    // webSocketService = WebSocketService('ws://${Config().baseUrl}/ws');
     // webSocketService = WebSocketService('ws://10.0.2.2:8080/ws');
-    channel = webSocketService.channel;
-    channel.stream.listen((message) {
+    webSocketService = Provider.of<WebSocketService>(context, listen: false);
+    webSocketService.messages.listen((message) {
         setState(() {
             _receivedMessage = jsonDecode(message);
             switch (_receivedMessage['contentType']) {
@@ -72,7 +72,6 @@ class GenreCardsState extends State<GenreCards> {
             default:
               print('Unknown content type');
             }
-            print(message);
             print(_receivedMessage);
             });
         });
