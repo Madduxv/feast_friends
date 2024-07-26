@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'package:provider/provider.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:what_to_eat_app/RestaurantCardsPage.dart';
+// import 'package:what_to_eat_app/RestaurantCardsPage.dart';
 // import 'package:what_to_eat_app/functions/alertFunction.dart';
 // import 'package:what_to_eat_app/functions/httpFunctions.dart';
 import 'package:what_to_eat_app/functions/WebSocketService.dart';
 import 'package:what_to_eat_app/utils/constants.dart';
 import 'package:what_to_eat_app/widgets/appBar.dart';
 import 'package:what_to_eat_app/widgets/bottomBar.dart';
-import 'package:what_to_eat_app/config.dart';
+// import 'package:what_to_eat_app/config.dart';
 
 import 'UserCompleteWaitingPage.dart';
 
@@ -26,12 +26,10 @@ class GenreCardsState extends State<GenreCards> {
   late WebSocketService webSocketService;
   late WebSocketChannel channel;
   final Completer<void> _genresCompleter = Completer<void>();
-  final Completer<void> _restaurantsCompleter = Completer<void>();
   // TextEditingController _controller = TextEditingController();
   dynamic _receivedMessage = '';
   String message = '';
   List<String> genres = [];
-  List<String> restaurants = [];
   String name = "Maddux";
   String groupName = "Maddux's Group";
 
@@ -56,15 +54,11 @@ class GenreCardsState extends State<GenreCards> {
         setState(() {
             _receivedMessage = jsonDecode(message);
             switch (_receivedMessage['contentType']) {
+            //debug mode
             case 'genres':
               genres = List<String>.from(_receivedMessage['content']);
               _genresCompleter.complete();
               print(genres);
-              break;
-            case 'restaurants':
-              restaurants = List<String>.from(_receivedMessage['content']);
-              _restaurantsCompleter.complete();
-              print(restaurants);
               break;
             // case 'message':
             //   this.message = _receivedMessage['content'];
@@ -110,26 +104,23 @@ class GenreCardsState extends State<GenreCards> {
 
   Future<void> _requestGenre(genre) async {
     webSocketService.sendMessage('addGenre', genre);
-    print('Genre requested');
+    // print('Genre requested');
   }
 
+  //debug mode
   Future<void> _requestedGenres(genre) async {
     webSocketService.sendMessage('getRequestedGenres', groupName);
   }
 
-  Future<void> _requestedRestaurants(groupName) async {
-    webSocketService.sendMessage('getRestaurantChoices', groupName);
-  }
-
+  //debug mode
   Future<void> fetchAndNavigate(String groupName) async {
     _requestedGenres(groupName);
-    _requestedRestaurants(groupName);
 
-    await Future.wait([_genresCompleter.future, _restaurantsCompleter.future]);
-    print('genres: $genres \n restaurants: $restaurants');
+    await Future.wait([_genresCompleter.future]);
+    print('genres: $genres');
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return UserCompleteWaitingPage(genres: genres, restaurants: restaurants, groupName: groupName);
+          return UserCompleteWaitingPage(genres: genres, groupName: groupName);
           }));
   }
 

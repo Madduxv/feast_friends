@@ -17,7 +17,7 @@ class RestaurantCards extends StatefulWidget {
   final List<String> restaurantChoices;
   final String groupName;
 
-  const RestaurantCards({Key? key, required this.restaurantChoices, required this.groupName}): super(key: key);
+  const RestaurantCards({super.key, required this.restaurantChoices, required this.groupName});
 
   @override
   RestaurantCardState createState() => RestaurantCardState();
