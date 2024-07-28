@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
+import 'package:what_to_eat_app/FindUserPage.dart';
 import 'dart:convert';
 
 import 'package:what_to_eat_app/functions/WebSocketService.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(brightness: Brightness.dark),
-          home: const GenreCards(),
+          home: const FindUserPage(),
           )
         );
     }

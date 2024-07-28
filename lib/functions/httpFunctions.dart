@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:what_to_eat_app/main.dart';
+// import 'package:what_to_eat_app/main.dart';
 import 'dart:convert';
 import 'package:what_to_eat_app/config.dart';
 
@@ -18,7 +18,7 @@ class HttpFunctions {
   }
 
   static Future<List<String>> getRequestedRestaurants() async {
-    final url = Uri.parse('${Config().baseUrl}/api/restaurant/requested_restaurants');
+    final url = Uri.parse('http://${Config().baseUrl}/api/restaurant/requested_restaurants');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -83,5 +83,60 @@ class HttpFunctions {
     } catch (e) {
       print('Error clearing requested genres: $e');
     }
+  }
+
+  static Future<void> addUserFriend(String user, String friend) async {
+    final url = Uri.parse('http://${Config().baseUrl}/api/user/add_friend?user=$user&friend=$friend');
+    try {
+      final response = await http.post(url);
+      if (response.statusCode == 200) {
+        print('Successfully added friend');
+        debugPrint("");
+      } else {
+        print('Failed to add friend. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error adding friend: $e');
+    }
+  }
+
+  static Future<List<String>> getUsersNames() async {
+    final url = Uri.parse('http://${Config().baseUrl}/api/user/all_users_names');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        print('Successfully fetched users names');
+        // Parse the response body to a list of strings
+        List<dynamic> jsonResponse = jsonDecode(response.body);
+        List<String> usersNames = jsonResponse.cast<String>();
+        print(usersNames);
+        return usersNames;
+      } else {
+        print('Failed to load users names. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching users names: $e');
+    }
+    return [];
+  }
+
+  static Future<List<String>> getUsersFriends(String name) async {
+    final url = Uri.parse('http://${Config().baseUrl}/api/user/get_friends?name$name');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        print('Successfully fetched users friends');
+        // Parse the response body to a list of strings
+        List<dynamic> jsonResponse = jsonDecode(response.body);
+        List<String> usersNames = jsonResponse.cast<String>();
+        print(usersNames);
+        return usersNames;
+      } else {
+        print('Failed to load users friends. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching users friends: $e');
+    }
+    return [];
   }
 }

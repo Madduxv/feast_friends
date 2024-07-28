@@ -16,7 +16,7 @@ class _MySearchBarState extends State<MySearchBar> {
       padding: const EdgeInsets.all(8.0),
       child: TextField(
         onChanged: widget.onQueryChanged,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: 'Search...',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
