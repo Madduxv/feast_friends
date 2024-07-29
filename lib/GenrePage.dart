@@ -16,7 +16,8 @@ import 'package:what_to_eat_app/widgets/bottomBar.dart';
 import 'UserCompleteWaitingPage.dart';
 
 class GenreCards extends StatefulWidget {
-  const GenreCards({Key? key}): super(key: key);
+  GenreCards({super.key, required this.name});
+  String name;
 
   @override
   GenreCardsState createState() => GenreCardsState();
@@ -30,8 +31,8 @@ class GenreCardsState extends State<GenreCards> {
   dynamic _receivedMessage = '';
   String message = '';
   List<String> genres = [];
-  String name = "Maddux";
-  String groupName = "Maddux's Group";
+  String name = '';
+  String groupName = '';
 
   List<SwipeItem> _swipeItems = <SwipeItem>[];
   MatchEngine? _matchEngine;
@@ -49,6 +50,8 @@ class GenreCardsState extends State<GenreCards> {
     super.initState();
     // webSocketService = WebSocketService('ws://${Config().baseUrl}/ws');
     // webSocketService = WebSocketService('ws://10.0.2.2:8080/ws');
+    name = widget.name;
+    groupName = "${widget.name}'s Group";
     webSocketService = Provider.of<WebSocketService>(context, listen: false);
     webSocketService.messages.listen((message) {
         setState(() {

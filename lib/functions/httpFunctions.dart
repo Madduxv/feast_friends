@@ -119,18 +119,17 @@ class HttpFunctions {
     }
     return [];
   }
-
   static Future<List<String>> getUsersFriends(String name) async {
-    final url = Uri.parse('http://${Config().baseUrl}/api/user/get_friends?name$name');
+    final url = Uri.parse('http://${Config().baseUrl}/api/user/get_friends?name=$name');
     try {
       final response = await http.get(url);
+      print(response.body);
       if (response.statusCode == 200) {
         print('Successfully fetched users friends');
         // Parse the response body to a list of strings
         List<dynamic> jsonResponse = jsonDecode(response.body);
-        List<String> usersNames = jsonResponse.cast<String>();
-        print(usersNames);
-        return usersNames;
+        List<String> friendsNames = jsonResponse.map((friend) => friend['name'] as String).toList();
+        return friendsNames;
       } else {
         print('Failed to load users friends. Status code: ${response.statusCode}');
       }

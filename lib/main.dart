@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 import 'package:what_to_eat_app/FindUserPage.dart';
+import 'package:what_to_eat_app/GenrePage.dart';
 import 'dart:convert';
 
 import 'package:what_to_eat_app/functions/WebSocketService.dart';
 import 'package:what_to_eat_app/config.dart';
-import 'GenrePage.dart';
+import 'login_page.dart';
 // import 'RestaurantCardsPage.dart';
 // import 'FindUserPage.dart';
 //rename to feast friend
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(brightness: Brightness.dark),
-          home: const FindUserPage(),
+          home: const LoginPage(),
           )
         );
     }

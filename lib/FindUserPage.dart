@@ -42,7 +42,7 @@ class _FindUserPageState extends State<FindUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Find a Feast Friend'),
+        title: const Text('Find a Feast Friend'),
       ),
       body: Column(
         children: [
