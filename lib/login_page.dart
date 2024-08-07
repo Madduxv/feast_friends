@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:async';
+import 'package:provider/provider.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:what_to_eat_app/functions/WebSocketService.dart';
 import 'package:what_to_eat_app/GenrePage.dart';
 import 'package:what_to_eat_app/functions/httpFunctions.dart';
 
@@ -11,12 +16,41 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late WebSocketService webSocketService;
+  late WebSocketChannel channel;
   late TextEditingController _controller;
+  dynamic _receivedMessage = '';
+  final Completer<void> _nameCompleter = Completer<void>();
+  final Completer<void> _activeFriendsCompleter = Completer<void>();
   List<String> friends = []; 
+  List<String> activeFriends = []; 
   String name = '';
 
   @override
   void initState() {
+    webSocketService = Provider.of<WebSocketService>(context, listen: false);
+    webSocketService.messages.listen((message) {
+        setState(() {
+            _receivedMessage = jsonDecode(message);
+            switch (_receivedMessage['contentType']) {
+            //debug mode
+            case 'activeFriends':
+              activeFriends = List<String>.from(_receivedMessage['content']);
+              print(activeFriends);
+              _activeFriendsCompleter.complete();
+              break;
+            case 'nameSet':
+              _nameCompleter.complete();
+              break;
+            // case 'message':
+            //   this.message = _receivedMessage['content'];
+            //   break;
+            default:
+              print('Unknown content type');
+            }
+            print(_receivedMessage);
+            });
+        });
     super.initState();
     _controller = TextEditingController();
   }
@@ -25,6 +59,14 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _getActiveFriends() async {
+    webSocketService.sendMessage('friends', '');
+  }
+
+  Future<void> _setName(String name) async {
+    webSocketService.sendMessage('name', name);
   }
 
   @override
@@ -42,8 +84,13 @@ class _LoginPageState extends State<LoginPage> {
           controller: _controller,
           onFieldSubmitted: (String value) async {
             name = value;
+            _setName(name);
+            await Future.wait([_nameCompleter.future]);
+            _getActiveFriends();
             friends = await HttpFunctions.getUsersFriends(value);
+            await Future.wait([_activeFriendsCompleter.future]);
             print(friends);
+            print(activeFriends);
             Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return GenreCards(name: name);
                   }));
