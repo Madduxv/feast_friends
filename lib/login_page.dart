@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
               print(activeFriends);
               _activeFriendsCompleter.complete();
               break;
-            case 'nameSet':
+            case 'name':
               _nameCompleter.complete();
               break;
             // case 'message':
