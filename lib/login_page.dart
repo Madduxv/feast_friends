@@ -12,10 +12,10 @@ class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}): super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   late WebSocketService webSocketService;
   late WebSocketChannel channel;
   late TextEditingController _controller;
@@ -30,14 +30,13 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
             _receivedMessage = jsonDecode(message);
             switch (_receivedMessage['contentType']) {
-            case 'name':
-              print("Name Set");
-              _nameCompleter.complete();
-              break;
-            default:
-              print('Unknown content type $_receivedMessage[contentType]');
-            }
-            print(_receivedMessage);
+              case 'name':
+                print("Name Set");
+                _nameCompleter.complete();
+                break;
+              default:
+                print('Unknown content type ${_receivedMessage['contentType']}');
+              }
             });
         });
     super.initState();

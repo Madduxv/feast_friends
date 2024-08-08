@@ -32,22 +32,20 @@ class UserCompleteWaitingPageState extends State<UserCompleteWaitingPage> {
     webSocketService.messages.listen((message) {
         setState(() {
             _receivedMessage = jsonDecode(message);
-            print(_receivedMessage);
             switch (_receivedMessage['contentType']) {
-            case 'groupDoneStatus':
-              _groupDoneCompleter.complete();
-              _requestedRestaurants(widget.groupName);
-              print("Everyone is done choosing genres.");
-              break;
-            case 'restaurants':
-              restaurants = List<String>.from(_receivedMessage['content']);
-              _restaurantsCompleter.complete();
-              print(restaurants);
-              break;
-            default:
-              print('Unknown content type');
-            }
-            print(_receivedMessage);
+                case 'groupDoneStatus':
+                  _groupDoneCompleter.complete();
+                  _requestedRestaurants(widget.groupName);
+                  print("Everyone is done choosing genres.");
+                  break;
+                case 'restaurants':
+                  restaurants = List<String>.from(_receivedMessage['content']);
+                  _restaurantsCompleter.complete();
+                  print(restaurants);
+                  break;
+                default:
+                  print('Unknown content type ${_receivedMessage['contentType']}');
+                }
             });
         });
           _sendDoneMessage(widget.groupName);

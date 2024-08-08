@@ -6,11 +6,11 @@ class FindUserPage extends StatefulWidget {
   const FindUserPage({Key? key}): super(key: key);
 
   @override
-  _FindUserPageState createState() => _FindUserPageState();
+  FindUserPageState createState() => FindUserPageState();
 }
 
 
-class _FindUserPageState extends State<FindUserPage> {
+class FindUserPageState extends State<FindUserPage> {
   List<String> data = [];
   List<String> searchResults = [];
   String name = 'Maddux';

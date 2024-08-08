@@ -6,15 +6,15 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:what_to_eat_app/functions/WebSocketService.dart';
 
 class FindGroupPage extends StatefulWidget {
-  const FindGroupPage({Key? key, required this.name}): super(key: key);
+  const FindGroupPage({/* Key? key */super.key, required this.name})/* : super(key: key) */;
   final String name;
 
   @override
-  _FindGroupPageState createState() => _FindGroupPageState();
+  FindGroupPageState createState() => FindGroupPageState();
 }
 
 
-class _FindGroupPageState extends State<FindGroupPage> {
+class FindGroupPageState extends State<FindGroupPage> {
   late WebSocketService webSocketService;
   late WebSocketChannel channel;
   dynamic _receivedMessage = '';
@@ -30,14 +30,13 @@ class _FindGroupPageState extends State<FindGroupPage> {
         setState(() {
             _receivedMessage = jsonDecode(message);
             switch (_receivedMessage['contentType']) {
-            case 'activeFriendsGroups':
-              activeFriendsGroups = List<String>.from(_receivedMessage['content']);
-              _updateOpenGroups(activeFriendsGroups);
-              break;
-            default:
-              print('Unknown content type $_receivedMessage[contentType]');
-            }
-            print(_receivedMessage);
+              case 'activeFriendsGroups':
+                activeFriendsGroups = List<String>.from(_receivedMessage['content']);
+                _updateOpenGroups(activeFriendsGroups);
+                break;
+              default:
+                print('Unknown content type ${_receivedMessage['contentType']}');
+              }
             });
         });
     super.initState();

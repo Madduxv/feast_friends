@@ -34,7 +34,7 @@ class GenreCardsState extends State<GenreCards> {
   String name = '';
   String groupName = '';
 
-  List<SwipeItem> _swipeItems = <SwipeItem>[];
+  final List<SwipeItem> _swipeItems = <SwipeItem>[];
   MatchEngine? _matchEngine;
   List<String> genreNames = [
     'American',
@@ -57,19 +57,15 @@ class GenreCardsState extends State<GenreCards> {
         setState(() {
             _receivedMessage = jsonDecode(message);
             switch (_receivedMessage['contentType']) {
-            //debug mode
-            case 'genres':
-              genres = List<String>.from(_receivedMessage['content']);
-              _genresCompleter.complete();
-              print(genres);
-              break;
-            // case 'message':
-            //   this.message = _receivedMessage['content'];
-            //   break;
-            default:
-              print('Unknown content type');
-            }
-            print(_receivedMessage);
+              //debug mode
+              case 'genres':
+                genres = List<String>.from(_receivedMessage['content']);
+                _genresCompleter.complete();
+                print(genres);
+                break;
+              default:
+                print('Unknown content type ${_receivedMessage['contentType']}');
+              }
             });
         });
     _joinGroup(groupName);

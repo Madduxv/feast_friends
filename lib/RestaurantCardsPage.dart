@@ -28,7 +28,7 @@ class RestaurantCardState extends State<RestaurantCards> {
   final Completer<void> _restaurantsCompleter = Completer<void>();
   dynamic _receivedMessage = '';
 
-  List<SwipeItem> _swipeItems = <SwipeItem>[];
+  final List<SwipeItem> _swipeItems = <SwipeItem>[];
   MatchEngine? _matchEngine;
 
   List<String> restaurantNames = [];
@@ -43,15 +43,14 @@ class RestaurantCardState extends State<RestaurantCards> {
         setState(() {
             _receivedMessage = jsonDecode(message);
             switch (_receivedMessage['contentType']) {
-            case 'groupRestaurants':
-              restaurants = List<String>.from(_receivedMessage['content']);
-              _restaurantsCompleter.complete();
-              print(restaurants);
-              break;
-            default:
-              print('Unknown content type');
-            }
-            print(_receivedMessage);
+              case 'groupRestaurants':
+                restaurants = List<String>.from(_receivedMessage['content']);
+                _restaurantsCompleter.complete();
+                print(restaurants);
+                break;
+                default:
+                  print('Unknown content type ${_receivedMessage['contentType']}');
+                }
             });
         });
 
