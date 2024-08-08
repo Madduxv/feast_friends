@@ -4,11 +4,10 @@ import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:what_to_eat_app/functions/WebSocketService.dart';
-import 'package:what_to_eat_app/widgets/searchBar.dart';
-import 'package:what_to_eat_app/functions/httpFunctions.dart';
 
 class FindGroupPage extends StatefulWidget {
-  const FindGroupPage({Key? key}): super(key: key);
+  const FindGroupPage({Key? key, required this.name}): super(key: key);
+  final String name;
 
   @override
   _FindGroupPageState createState() => _FindGroupPageState();
@@ -18,50 +17,45 @@ class FindGroupPage extends StatefulWidget {
 class _FindGroupPageState extends State<FindGroupPage> {
   late WebSocketService webSocketService;
   late WebSocketChannel channel;
-  final Completer<void> _activeFriendsCompleter = Completer<void>();
   dynamic _receivedMessage = '';
   List<String> data = [];
-  List<String> searchResults = [];
-  List<String> activeFriends = []; 
-  String name = 'Maddux';
+  List<String> activeFriendsGroups = []; 
+  String name = '';
 
   @override
   void initState() {
+    name = widget.name;
     webSocketService = Provider.of<WebSocketService>(context, listen: false);
     webSocketService.messages.listen((message) {
         setState(() {
             _receivedMessage = jsonDecode(message);
             switch (_receivedMessage['contentType']) {
             case 'activeFriendsGroups':
-              activeFriends = List<String>.from(_receivedMessage['content']);
-              print(activeFriends);
-              _activeFriendsCompleter.complete();
+              activeFriendsGroups = List<String>.from(_receivedMessage['content']);
+              _updateOpenGroups(activeFriendsGroups);
               break;
             default:
-              print('Unknown content type');
+              print('Unknown content type $_receivedMessage[contentType]');
             }
             print(_receivedMessage);
             });
         });
     super.initState();
-    loadUsersNames();
+    loadOpenGroups();
   }
 
-  void onQueryChanged(String query) {
+  Future<void> loadOpenGroups() async {
+    webSocketService.sendMessage('friendsGroups', '');
+  }
+
+  Future<void> _updateOpenGroups(List<String> activeFriendsGroups) async {
     setState(() {
-      searchResults = data
-          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      activeFriendsGroups = activeFriendsGroups;
     });
   }
 
-  void loadUsersNames() async {
-    data = await getUsersNames();
-  }
-
-  Future<List<String>> getUsersNames() async {
-    data = await HttpFunctions.getUsersNames();
-    return data;
+  Future<void> _joinGroup(String groupName) async {
+    webSocketService.sendMessage('join', groupName);
   }
 
   @override
@@ -72,14 +66,13 @@ class _FindGroupPageState extends State<FindGroupPage> {
       ),
       body: Column(
         children: [
-          MySearchBar(onQueryChanged: onQueryChanged),
           Expanded(
             child: ListView.builder(
-              itemCount: searchResults.length,
+              itemCount: activeFriendsGroups.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(searchResults[index]),
-                  onTap: () {_showPopup(context, searchResults[index], name);
+                  title: Text(activeFriendsGroups[index]),
+                  onTap: () {_showPopup(context, activeFriendsGroups[index], name);
                   },
                 );
               },
@@ -90,13 +83,13 @@ class _FindGroupPageState extends State<FindGroupPage> {
     );
   }
 
-  void _showPopup (BuildContext context, String item, String name) {
+  void _showPopup (BuildContext context, String item, String groupName) {
     showDialog(
     context: context, 
     barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Add $item as a friend?"),
+        title: Text("Join $item?"),
         backgroundColor: Colors.grey,
         actions: <Widget> [
         TextButton(
@@ -108,7 +101,7 @@ class _FindGroupPageState extends State<FindGroupPage> {
         TextButton(
           child: const Text('Yes'),
           onPressed: () {
-            HttpFunctions.addUserFriend(name, item);
+            _joinGroup(item);
             Navigator.of(context).pop();
           },
         ),],

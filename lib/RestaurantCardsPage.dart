@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:swipe_cards/swipe_cards.dart';
 
-import 'package:what_to_eat_app/functions/alertFunction.dart';
 // import 'package:what_to_eat_app/functions/httpFunctions.dart';
 import 'package:what_to_eat_app/functions/WebSocketService.dart';
 import 'package:what_to_eat_app/utils/constants.dart';
@@ -62,14 +61,11 @@ class RestaurantCardState extends State<RestaurantCards> {
       _swipeItems.add(SwipeItem(content: Content(text: restaurantNames[i]),
           likeAction: (){
             _requestRestaurant(restaurantNames[i]);
-            actions(context, restaurantNames[i], 'Liked');
           },
           nopeAction: (){
-            actions(context, restaurantNames[i], 'Rejected');
           },
           superlikeAction: (){
             _requestRestaurant(restaurantNames[i]);
-            actions(context, restaurantNames[i], 'Super Liked');
           }
       ));
     }

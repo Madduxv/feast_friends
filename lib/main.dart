@@ -3,6 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 import 'package:what_to_eat_app/FindUserPage.dart';
 import 'package:what_to_eat_app/GenrePage.dart';
+import 'package:what_to_eat_app/find_group_page.dart';
 import 'dart:convert';
 
 import 'package:what_to_eat_app/functions/WebSocketService.dart';

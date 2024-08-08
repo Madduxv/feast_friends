@@ -5,7 +5,7 @@ import 'package:swipe_cards/swipe_cards.dart';
 import 'package:provider/provider.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 // import 'package:what_to_eat_app/RestaurantCardsPage.dart';
-// import 'package:what_to_eat_app/functions/alertFunction.dart';
+import 'package:what_to_eat_app/functions/alertFunction.dart';
 // import 'package:what_to_eat_app/functions/httpFunctions.dart';
 import 'package:what_to_eat_app/functions/WebSocketService.dart';
 import 'package:what_to_eat_app/utils/constants.dart';
@@ -16,8 +16,8 @@ import 'package:what_to_eat_app/widgets/bottomBar.dart';
 import 'UserCompleteWaitingPage.dart';
 
 class GenreCards extends StatefulWidget {
-  GenreCards({super.key, required this.name});
-  String name;
+  const GenreCards({super.key, required this.name});
+  final String name;
 
   @override
   GenreCardsState createState() => GenreCardsState();
@@ -78,16 +78,14 @@ class GenreCardsState extends State<GenreCards> {
       _swipeItems.add(SwipeItem(content: Content(text: genreNames[i]),
           likeAction: (){
             _requestGenre(genreNames[i].toUpperCase());
-            // HttpFunctions.requestGenre(genreNames[i].toUpperCase());
-            // actions(context, genreNames[i], 'Liked');
+            actions(context, genreNames[i], 'Liked');
           },
           nopeAction: (){
-            // actions(context, genreNames[i], 'Rejected');
+            actions(context, genreNames[i], 'Rejected');
           },
           superlikeAction: (){
+            actions(context, genreNames[i], 'Super Liked');
             _requestGenre(genreNames[i].toUpperCase());
-            // HttpFunctions.requestGenre(genreNames[i]);
-            // actions(context, genreNames[i], 'Super Liked');
           }
       ));
     }
