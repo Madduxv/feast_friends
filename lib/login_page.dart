@@ -34,12 +34,13 @@ class _LoginPageState extends State<LoginPage> {
             _receivedMessage = jsonDecode(message);
             switch (_receivedMessage['contentType']) {
             //debug mode
-            case 'activeFriends':
+            case 'activeFriendsGroups':
               activeFriends = List<String>.from(_receivedMessage['content']);
               print(activeFriends);
               _activeFriendsCompleter.complete();
               break;
             case 'name':
+              print("Name Set");
               _nameCompleter.complete();
               break;
             // case 'message':
@@ -62,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _getActiveFriends() async {
-    webSocketService.sendMessage('friends', '');
+    webSocketService.sendMessage('friendsGroups', '');
   }
 
   Future<void> _setName(String name) async {
@@ -87,7 +88,6 @@ class _LoginPageState extends State<LoginPage> {
             _setName(name);
             await Future.wait([_nameCompleter.future]);
             _getActiveFriends();
-            friends = await HttpFunctions.getUsersFriends(value);
             await Future.wait([_activeFriendsCompleter.future]);
             print(friends);
             print(activeFriends);
