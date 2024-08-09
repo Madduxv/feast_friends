@@ -15,6 +15,7 @@ class FindGroupPage extends StatefulWidget {
 
 
 class FindGroupPageState extends State<FindGroupPage> {
+  Timer? _timer;
   late WebSocketService webSocketService;
   late WebSocketChannel channel;
   dynamic _receivedMessage = '';
@@ -41,6 +42,19 @@ class FindGroupPageState extends State<FindGroupPage> {
         });
     super.initState();
     loadOpenGroups();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) async {
+      await loadOpenGroups();
+    });
   }
 
   Future<void> loadOpenGroups() async {
